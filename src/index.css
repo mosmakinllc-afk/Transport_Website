@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background: #030705;
+  color: #e2e8f0;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.glass {
+  background: rgba(8, 20, 14, 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(16, 185, 129, 0.15);
+}
+
+.glow-emerald {
+  box-shadow: 0 0 25px rgba(16, 185, 129, 0.35);
+}

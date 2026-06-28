@@ -1,0 +1,392 @@
+import { Shipment, FleetAsset, FreightHub, Driver, Warehouse } from '../types';
+
+export const INITIAL_HUBS: FreightHub[] = [
+  {
+    id: 'hub-chicago',
+    name: 'Chicago BNSF Intermodal Yard',
+    code: 'ORD',
+    city: 'Chicago',
+    state: 'IL',
+    type: 'intermodal_yard',
+    lat: 41.8781,
+    lng: -87.6298,
+    capacityUtilization: 88,
+    activeShipmentsCount: 3100,
+    dockDoorsAvailable: 8,
+    totalDockDoors: 60
+  },
+  {
+    id: 'hub-lax',
+    name: 'Los Angeles Gateway Depot',
+    code: 'LAX',
+    city: 'Los Angeles',
+    state: 'CA',
+    type: 'intermodal_yard',
+    lat: 33.9416,
+    lng: -118.4085,
+    capacityUtilization: 91,
+    activeShipmentsCount: 2840,
+    dockDoorsAvailable: 4,
+    totalDockDoors: 55
+  },
+  {
+    id: 'hub-dfw',
+    name: 'Dallas/Fort Worth Central Hub',
+    code: 'DFW',
+    city: 'Dallas',
+    state: 'TX',
+    type: 'inland_depot',
+    lat: 32.8998,
+    lng: -97.0403,
+    capacityUtilization: 78,
+    activeShipmentsCount: 1420,
+    dockDoorsAvailable: 12,
+    totalDockDoors: 42
+  },
+  {
+    id: 'hub-atl',
+    name: 'Atlanta Distribution Megahub',
+    code: 'ATL',
+    city: 'Atlanta',
+    state: 'GA',
+    type: 'inland_depot',
+    lat: 33.6407,
+    lng: -84.4277,
+    capacityUtilization: 82,
+    activeShipmentsCount: 1650,
+    dockDoorsAvailable: 9,
+    totalDockDoors: 48
+  },
+  {
+    id: 'hub-ewr',
+    name: 'Newark / NYC Interstate Terminal',
+    code: 'EWR',
+    city: 'Newark',
+    state: 'NJ',
+    type: 'airport',
+    lat: 40.6895,
+    lng: -74.1745,
+    capacityUtilization: 85,
+    activeShipmentsCount: 1890,
+    dockDoorsAvailable: 6,
+    totalDockDoors: 44
+  },
+  {
+    id: 'hub-sea',
+    name: 'Seattle Pacific Northwest Yard',
+    code: 'SEA',
+    city: 'Seattle',
+    state: 'WA',
+    type: 'intermodal_yard',
+    lat: 47.4502,
+    lng: -122.3088,
+    capacityUtilization: 74,
+    activeShipmentsCount: 940,
+    dockDoorsAvailable: 15,
+    totalDockDoors: 36
+  },
+  {
+    id: 'hub-den',
+    name: 'Denver Rocky Mountain Hub',
+    code: 'DEN',
+    city: 'Denver',
+    state: 'CO',
+    type: 'inland_depot',
+    lat: 39.8561,
+    lng: -104.6737,
+    capacityUtilization: 68,
+    activeShipmentsCount: 720,
+    dockDoorsAvailable: 18,
+    totalDockDoors: 40
+  }
+];
+
+export const INITIAL_SHIPMENTS: Shipment[] = [
+  {
+    id: 'SHP-90421',
+    trackingNumber: 'NX-88210492',
+    clientName: 'Apex American Industrial',
+    origin: { city: 'Chicago', state: 'IL', code: 'ORD', lat: 41.8781, lng: -87.6298 },
+    destination: { city: 'Los Angeles', state: 'CA', code: 'LAX', lat: 33.9416, lng: -118.4085 },
+    mode: 'intermodal',
+    status: 'in_transit',
+    cargoDescription: 'High-Density Lithium Microcontrollers (53ft Intermodal Container)',
+    weightKg: 18500,
+    volumeCbm: 64,
+    declaredValueUsd: 420000,
+    requiresTempControl: true,
+    currentTempCelcius: 18.2,
+    isHazmat: true,
+    departureTime: '2026-06-25T08:00:00Z',
+    estimatedArrival: '2026-06-29T14:00:00Z',
+    currentLocation: { lat: 41.1, lng: -100.7, name: 'North Platte, NE (Union Pacific Yard)' },
+    assignedVehicleId: 'FLT-003'
+  },
+  {
+    id: 'SHP-90422',
+    trackingNumber: 'NX-77382011',
+    clientName: 'BioPharma National Labs',
+    origin: { city: 'Newark', state: 'NJ', code: 'EWR', lat: 40.6895, lng: -74.1745 },
+    destination: { city: 'Dallas', state: 'TX', code: 'DFW', lat: 32.8998, lng: -97.0403 },
+    mode: 'air',
+    status: 'in_transit',
+    cargoDescription: 'Cryogenic Reagents & Medical Biologics',
+    weightKg: 1200,
+    volumeCbm: 8.5,
+    declaredValueUsd: 1250000,
+    requiresTempControl: true,
+    currentTempCelcius: -20.0,
+    isHazmat: false,
+    departureTime: '2026-06-28T04:30:00Z',
+    estimatedArrival: '2026-06-28T16:15:00Z',
+    currentLocation: { lat: 36.8, lng: -86.4, name: 'Kentucky Air Corridor (FL360)' },
+    assignedVehicleId: 'FLT-002'
+  },
+  {
+    id: 'SHP-90423',
+    trackingNumber: 'NX-55019284',
+    clientName: 'Midwest Automotive Group',
+    origin: { city: 'Atlanta', state: 'GA', code: 'ATL', lat: 33.6407, lng: -84.4277 },
+    destination: { city: 'Los Angeles', state: 'CA', code: 'LAX', lat: 33.9416, lng: -118.4085 },
+    mode: 'road',
+    status: 'out_for_delivery',
+    cargoDescription: 'Alloy Engine Blocks & Transmission Assemblies',
+    weightKg: 22000,
+    volumeCbm: 75,
+    declaredValueUsd: 180000,
+    requiresTempControl: false,
+    isHazmat: false,
+    departureTime: '2026-06-25T11:00:00Z',
+    estimatedArrival: '2026-06-28T18:00:00Z',
+    currentLocation: { lat: 35.1, lng: -114.6, name: 'Kingman, AZ (I-40 West)' },
+    assignedDriverId: 'DRV-101',
+    assignedVehicleId: 'FLT-001'
+  },
+  {
+    id: 'SHP-90424',
+    trackingNumber: 'NX-11928374',
+    clientName: 'Pacific Clean Energy',
+    origin: { city: 'Seattle', state: 'WA', code: 'SEA', lat: 47.4502, lng: -122.3088 },
+    destination: { city: 'Denver', state: 'CO', code: 'DEN', lat: 39.8561, lng: -104.6737 },
+    mode: 'rail',
+    status: 'dot_hold',
+    cargoDescription: 'Photovoltaic Inverters & Heavy Cabling',
+    weightKg: 45000,
+    volumeCbm: 110,
+    declaredValueUsd: 310000,
+    requiresTempControl: false,
+    isHazmat: false,
+    departureTime: '2026-06-27T06:00:00Z',
+    estimatedArrival: '2026-06-29T10:00:00Z',
+    currentLocation: { lat: 43.1, lng: -112.3, name: 'Pocatello, ID (I-15 Port of Entry Weigh Station)' }
+  },
+  {
+    id: 'SHP-90425',
+    trackingNumber: 'NX-44920192',
+    clientName: 'Southern Luxury Textiles',
+    origin: { city: 'Dallas', state: 'TX', code: 'DFW', lat: 32.8998, lng: -97.0403 },
+    destination: { city: 'Miami', state: 'FL', code: 'MIA', lat: 25.7959, lng: -80.2871 },
+    mode: 'intermodal',
+    status: 'booked',
+    cargoDescription: 'Organic Cotton & Retail Display Units (53ft Container)',
+    weightKg: 8500,
+    volumeCbm: 28,
+    declaredValueUsd: 95000,
+    requiresTempControl: false,
+    isHazmat: false,
+    departureTime: '2026-06-30T12:00:00Z',
+    estimatedArrival: '2026-07-03T09:00:00Z',
+    currentLocation: { lat: 32.8998, lng: -97.0403, name: 'Dallas Alliance Intermodal Terminal' }
+  },
+  {
+    id: 'SHP-90426',
+    trackingNumber: 'NX-33219482',
+    clientName: 'TechVantage Silicon',
+    origin: { city: 'Los Angeles', state: 'CA', code: 'LAX', lat: 33.9416, lng: -118.4085 },
+    destination: { city: 'Chicago', state: 'IL', code: 'ORD', lat: 41.8781, lng: -87.6298 },
+    mode: 'air',
+    status: 'delivered',
+    cargoDescription: 'Server Rack Accelerators (Air Express Pallets)',
+    weightKg: 4200,
+    volumeCbm: 14,
+    declaredValueUsd: 890000,
+    requiresTempControl: false,
+    isHazmat: false,
+    departureTime: '2026-06-26T14:00:00Z',
+    estimatedArrival: '2026-06-27T02:00:00Z',
+    currentLocation: { lat: 41.8781, lng: -87.6298, name: 'Delivered to ORD Cargo Dock B' }
+  }
+];
+
+export const INITIAL_FLEET: FleetAsset[] = [
+  {
+    id: 'FLT-001',
+    name: 'Freightliner Cascadia Rig #404',
+    type: 'truck',
+    status: 'in_transit',
+    currentLocation: { lat: 35.1, lng: -114.6, name: 'Kingman, AZ (I-40)' },
+    destination: 'Los Angeles Depot',
+    fuelPercentage: 72,
+    speedKmh: 104,
+    driverName: 'Marcus Vance',
+    tempStatus: 'normal',
+    cargoCapacityTons: 24,
+    currentLoadTons: 22
+  },
+  {
+    id: 'FLT-002',
+    name: 'Boeing 777F National Air #12',
+    type: 'cargo_plane',
+    status: 'in_transit',
+    currentLocation: { lat: 36.8, lng: -86.4, name: 'Midwest Airspace' },
+    destination: 'Dallas DFW Hub',
+    fuelPercentage: 64,
+    speedKmh: 890,
+    driverName: 'Capt. Elena Rostova',
+    tempStatus: 'normal',
+    cargoCapacityTons: 102,
+    currentLoadTons: 98
+  },
+  {
+    id: 'FLT-003',
+    name: 'Union Pacific Intermodal Train #802',
+    type: 'intermodal_train',
+    status: 'in_transit',
+    currentLocation: { lat: 41.1, lng: -100.7, name: 'Nebraska I-80 Rail Corridor' },
+    destination: 'Los Angeles Yard',
+    fuelPercentage: 81,
+    speedKmh: 75,
+    driverName: 'Engineer Dave Miller',
+    tempStatus: 'normal',
+    cargoCapacityTons: 3500,
+    currentLoadTons: 3120
+  },
+  {
+    id: 'FLT-004',
+    name: 'Kenworth T680 Reefer Rig #91',
+    type: 'truck',
+    status: 'docked',
+    currentLocation: { lat: 40.6895, lng: -74.1745, name: 'Newark EWR Terminal Dock 4' },
+    destination: 'Chicago ORD Hub',
+    fuelPercentage: 95,
+    speedKmh: 0,
+    driverName: 'Jack Weaver',
+    tempStatus: 'normal',
+    cargoCapacityTons: 26,
+    currentLoadTons: 0
+  },
+  {
+    id: 'FLT-005',
+    name: 'Airbus A330F Express Cargo #05',
+    type: 'cargo_plane',
+    status: 'loading',
+    currentLocation: { lat: 32.8998, lng: -97.0403, name: 'Dallas DFW Gate C12' },
+    destination: 'Newark EWR',
+    fuelPercentage: 100,
+    speedKmh: 0,
+    driverName: 'Capt. Tariq Al-Mansoor',
+    tempStatus: 'normal',
+    cargoCapacityTons: 70,
+    currentLoadTons: 64
+  }
+];
+
+export const INITIAL_DRIVERS: Driver[] = [
+  {
+    id: 'DRV-101',
+    name: 'Marcus Vance',
+    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
+    licenseNumber: 'CDL-AZ-994182',
+    phone: '+1 (602) 555-0192',
+    assignedVehicle: 'Freightliner Cascadia #404',
+    status: 'driving',
+    hoursOfServiceRemaining: 4.5,
+    safetyScore: 98,
+    currentLocation: 'Arizona (I-40 West)'
+  },
+  {
+    id: 'DRV-102',
+    name: 'Jack Weaver',
+    avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
+    licenseNumber: 'CDL-NJ-448201',
+    phone: '+1 (201) 555-0421',
+    assignedVehicle: 'Kenworth T680 Reefer #91',
+    status: 'off_duty',
+    hoursOfServiceRemaining: 11.0,
+    safetyScore: 94,
+    currentLocation: 'Newark Turnpike Depot'
+  },
+  {
+    id: 'DRV-103',
+    name: 'Sarah Jenkins',
+    avatarUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=150&q=80',
+    licenseNumber: 'CDL-IL-119203',
+    phone: '+1 (773) 555-0811',
+    assignedVehicle: 'Peterbilt 579 Rig #212',
+    status: 'resting',
+    hoursOfServiceRemaining: 8.5,
+    safetyScore: 99,
+    currentLocation: 'Chicago Inland Depot'
+  },
+  {
+    id: 'DRV-104',
+    name: 'Cody Henderson',
+    avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80',
+    licenseNumber: 'CDL-TX-884920',
+    phone: '+1 (817) 555-1928',
+    assignedVehicle: 'Mack Anthem Heavy #15',
+    status: 'loading',
+    hoursOfServiceRemaining: 9.0,
+    safetyScore: 96,
+    currentLocation: 'Dallas Intermodal Yard'
+  }
+];
+
+export const INITIAL_WAREHOUSES: Warehouse[] = [
+  {
+    id: 'WH-01',
+    name: 'Los Angeles Coast Megahub',
+    location: 'Long Beach I-710 Logistics Corridor, CA',
+    totalAreaSqm: 65000,
+    utilizationPercent: 86,
+    temperatureControlled: true,
+    inventoryCategories: [
+      { category: 'Automotive & Industrial Parts', cbm: 24000, percentage: 40 },
+      { category: 'Pharmaceuticals & Biologics', cbm: 15000, percentage: 25 },
+      { category: 'Consumer Electronics', cbm: 12000, percentage: 20 },
+      { category: 'Dry Packaged Goods', cbm: 9000, percentage: 15 }
+    ],
+    inboundTrucksScheduled: 24,
+    outboundTrucksScheduled: 31
+  },
+  {
+    id: 'WH-02',
+    name: 'Midwest Central Distribution Hub',
+    location: 'O\'Hare Freight District, Chicago IL',
+    totalAreaSqm: 82000,
+    utilizationPercent: 72,
+    temperatureControlled: false,
+    inventoryCategories: [
+      { category: 'National E-Commerce Fulfillment', cbm: 35000, percentage: 55 },
+      { category: 'Heavy Equipment & Machinery', cbm: 18000, percentage: 28 },
+      { category: 'Apparel & Footwear', cbm: 11000, percentage: 17 }
+    ],
+    inboundTrucksScheduled: 42,
+    outboundTrucksScheduled: 38
+  },
+  {
+    id: 'WH-03',
+    name: 'Dallas-Fort Worth Tri-State Hub',
+    location: 'Alliance Intermodal Logistics Park, TX',
+    totalAreaSqm: 48000,
+    utilizationPercent: 93,
+    temperatureControlled: true,
+    inventoryCategories: [
+      { category: 'High-Tech & Server Assemblies', cbm: 26000, percentage: 60 },
+      { category: 'Aerospace Components', cbm: 10000, percentage: 23 },
+      { category: 'Retail Luxury Display Units', cbm: 7500, percentage: 17 }
+    ],
+    inboundTrucksScheduled: 19,
+    outboundTrucksScheduled: 22
+  }
+];
