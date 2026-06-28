@@ -1,0 +1,6 @@
+{
+  "name": "MO$ MAKIN L.L.C. Platform",
+  "description": "Enterprise logistics grid & revenue operating system by MO$ MAKIN L.L.C. featuring live fleet tracking, instant rate quoter, AI dispatch optimization, and warehouse analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
